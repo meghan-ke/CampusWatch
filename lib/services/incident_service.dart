@@ -60,4 +60,9 @@ class IncidentService {
       'statusHistory': FieldValue.arrayUnion([entry.toMap()]),
     });
   }
+
+    /// Removes an incident document. (Its photos stay in Storage.)
+  Future<void> deleteIncident(String incidentId) {
+    return _incidents.doc(incidentId).delete();
+  }
 }

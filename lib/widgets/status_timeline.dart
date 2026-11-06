@@ -63,7 +63,7 @@ class _TimelineEntry extends StatelessWidget {
                     color: color,
                     shape: BoxShape.circle,
                     border: isLast
-                        ? Border.all(color: color.withOpacity(0.3), width: 4)
+                        ? Border.all(color: color.withValues(alpha: 0.3), width: 4)
                         : null,
                   ),
                 ),

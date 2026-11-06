@@ -37,7 +37,8 @@ class IncidentDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isStaff = context.watch<AuthProvider>().isStaff;
+    final auth = context.watch<AuthProvider>();
+    final isStaff = auth.isStaff;
     final all = context.watch<IncidentProvider>().allIncidents;
     final matches = all.where((incident) => incident.id == incidentId);
 
@@ -53,11 +54,24 @@ class IncidentDetailScreen extends StatelessWidget {
     }
 
     final incident = matches.first;
+    final canDelete = isStaff ||
+      (incident.reporterId == auth.user?.uid &&
+        incident.status == IncidentStatus.submitted);
     final dateFormat = DateFormat('d MMM yyyy, HH:mm');
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Incident details')),
+      appBar: AppBar(
+        title: const Text('Incident details'),
+        actions: [
+          if (canDelete)
+            IconButton(
+              icon: const Icon(Icons.delete_outline),
+              tooltip: 'Delete report',
+              onPressed: () => _confirmDelete(context, incident),
+            ),
+        ],
+      ),
 
       // Pinned button, only for staff.
       bottomNavigationBar: isStaff
@@ -467,6 +481,42 @@ class _FullScreenImage extends StatelessWidget {
           child: Image.network(url, fit: BoxFit.contain),
         ),
       ),
+    );
+  }
+}
+
+/// Asks for confirmation, then deletes the report and closes the screen.
+Future<void> _confirmDelete(BuildContext context, Incident incident) async {
+  final confirmed = await showDialog<bool>(
+    context: context,
+    builder: (dialogContext) => AlertDialog(
+      title: const Text('Delete this report?'),
+      content: const Text('This cannot be undone.'),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(dialogContext).pop(false),
+          child: const Text('Cancel'),
+        ),
+        TextButton(
+          onPressed: () => Navigator.of(dialogContext).pop(true),
+          child: const Text('Delete'),
+        ),
+      ],
+    ),
+  );
+  if (confirmed != true || !context.mounted) return;
+
+  final provider = context.read<IncidentProvider>();
+  final messenger = ScaffoldMessenger.of(context);
+  final navigator = Navigator.of(context);
+
+  final success = await provider.deleteIncident(incident);
+  if (success) {
+    navigator.pop();
+    messenger.showSnackBar(const SnackBar(content: Text('Report deleted.')));
+  } else {
+    messenger.showSnackBar(
+      SnackBar(content: Text(provider.errorMessage ?? 'Delete failed.')),
     );
   }
 }

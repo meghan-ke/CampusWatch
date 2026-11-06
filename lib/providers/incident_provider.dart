@@ -252,6 +252,36 @@ class IncidentProvider extends ChangeNotifier {
     }
   }
 
+    /// Students may delete their own report while it is still "Submitted";
+  /// staff may delete any report. Firestore rules enforce the same limits.
+  Future<bool> deleteIncident(Incident incident) async {
+    final user = _user;
+    if (user == null) return false;
+
+    final isOwner = incident.reporterId == user.uid;
+    final allowed = user.role.isStaff ||
+        (isOwner && incident.status == IncidentStatus.submitted);
+    if (!allowed) return false;
+
+    _isSubmitting = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      await _incidentService.deleteIncident(incident.id);
+      return true;
+    } on FirebaseException catch (e) {
+      _errorMessage = 'Could not delete report: ${e.message ?? e.code}';
+      return false;
+    } catch (_) {
+      _errorMessage = 'Could not delete report. Please try again.';
+      return false;
+    } finally {
+      _isSubmitting = false;
+      notifyListeners();
+    }
+  }
+
   @override
   void dispose() {
     _subscription?.cancel();
