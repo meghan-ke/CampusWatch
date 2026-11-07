@@ -26,7 +26,7 @@ Every new account is a student. To make a staff account, register it in the app,
 
 ## Links and test accounts
 
-Demo video: https://youtu.be/3o1ut_y75SU
+Demo video: https://drive.google.com/drive/folders/1yvWlKizVhETXl1FN9v85zf6lf-o90KAj?usp=sharing
 
 Student test account: m.mwizerwa@alustudent.com, Password: megane123
 
