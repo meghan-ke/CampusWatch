@@ -33,9 +33,12 @@ class FirestorePaths {
 }
 
 /// Folder names in Firebase Storage.
-class StoragePaths {
-  StoragePaths._();
+/// Folder names in Firebase Storage.
+/// Cloudinary settings for photo uploads. The cloud name and an UNSIGNED
+/// preset name are safe to ship in the app; never add the API secret here.
+class CloudinaryConfig {
+  CloudinaryConfig._();
 
-  /// Photos are saved as: incident_images/{incidentId}/{fileName}
-  static const String incidentImages = 'incident_images';
+  static const String cloudName = 'txnykemd';
+  static const String uploadPreset = 'campuswatch_unsigned';
 }
