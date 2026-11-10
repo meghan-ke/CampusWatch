@@ -131,7 +131,7 @@ class AppTheme {
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.transparent,
-        indicatorColor: AppColors.secondary.withOpacity(0.28),
+        indicatorColor: AppColors.secondary.withValues(alpha: 0.28),
         iconTheme: WidgetStateProperty.resolveWith((states) {
           return IconThemeData(
             color: states.contains(WidgetState.selected)
@@ -154,7 +154,7 @@ class AppTheme {
 
       // Selected filter and category chips: soft rose with a burgundy tick.
       chipTheme: ChipThemeData(
-        selectedColor: AppColors.secondary.withOpacity(0.28),
+        selectedColor: AppColors.secondary.withValues(alpha: 0.28),
         checkmarkColor: AppColors.primary,
         side: BorderSide(color: Colors.grey.shade300),
       ),

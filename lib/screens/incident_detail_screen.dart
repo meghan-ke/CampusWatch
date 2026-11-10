@@ -247,7 +247,7 @@ class _InfoRow extends StatelessWidget {
             width: 36,
             height: 36,
             decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.08),
+              color: AppColors.primary.withValues(alpha: 0.08),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Icon(icon, size: 19, color: AppColors.primary),
@@ -356,7 +356,7 @@ class _CategoryBanner extends StatelessWidget {
     return Container(
       height: 120,
       decoration: BoxDecoration(
-        color: AppColors.primary.withOpacity(0.08),
+        color: AppColors.primary.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -425,7 +425,7 @@ class _PhotoGalleryState extends State<_PhotoGallery> {
                         progress == null
                             ? child
                             : const Center(child: CircularProgressIndicator()),
-                    errorBuilder: (_, __, ___) => Container(
+                    errorBuilder: (_, _, _) => Container(
                       color: Colors.grey.shade200,
                       child: const Icon(Icons.broken_image, color: Colors.grey),
                     ),

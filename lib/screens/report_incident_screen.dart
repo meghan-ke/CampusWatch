@@ -324,7 +324,7 @@ class _CategoryTile extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: selected
-              ? AppColors.primary.withOpacity(0.08)
+              ? AppColors.primary.withValues(alpha: 0.08)
               : const Color(0xFFF7F3F4),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(

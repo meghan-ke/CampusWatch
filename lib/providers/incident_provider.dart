@@ -206,16 +206,19 @@ class IncidentProvider extends ChangeNotifier {
       _errorMessage =
           'Could not reach the server. Check your internet and try again.';
       return false;
-    } on FirebaseException catch (e) {
-      _errorMessage = 'Could not submit report: ${e.message ?? e.code}';
+      } on ImageUploadException catch (e) {
+      _errorMessage = e.message;
       return false;
-    } catch (_) {
-      _errorMessage = 'Could not submit report. Please try again.';
-      return false;
-    } finally {
-      _isSubmitting = false;
-      notifyListeners();
-    }
+      } on FirebaseException catch (e) {
+        _errorMessage = 'Could not submit report: ${e.message ?? e.code}';
+        return false;
+      } catch (_) {
+        _errorMessage = 'Could not submit report. Please try again.';
+        return false;
+      } finally {
+        _isSubmitting = false;
+        notifyListeners();
+      }
   }
 
   /// Staff action: change a report's status and record it in the history.
